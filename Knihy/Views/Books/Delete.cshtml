@@ -1,0 +1,94 @@
+﻿@model Book
+@using Knihy.Data.Enums;
+@{
+	ViewData["Title"] = "Upravení záznamu";
+}
+
+<div class="row">
+	<div class="col-md-8 offset-2">
+		<p>
+			<h4>Editace knihy</h4>
+
+		</p>
+		<div class="row">
+			<div class="col-md-8 offset-2">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label asp-for="Name" class="control-label"></label>
+								<input asp-for="Name" class="form-control"></input>
+								<span asp-validation-for="Name" class="text-danger"></span>
+							</div>
+							<div class="mb-3">
+								<label asp-for="BuyDate" class="control-label"></label>
+								<input asp-for="BuyDate" type="date" class="form-control"></input>
+								<span asp-validation-for="BuyDate" class="text-danger"></span>
+							</div>
+							<div class="mb-3">
+								<label asp-for="FinishedDate" class="control-label"></label>
+								<input asp-for="FinishedDate" type="date" class="form-control"></input>
+								<span asp-validation-for="FinishedDate" class="text-danger"></span>
+							</div>
+							<div class="mb-3">
+								<label asp-for="View" class="control-label"></label>
+								<input asp-for="View" class="form-control"></input>
+								<span asp-validation-for="View" class="text-danger"></span>
+							</div>
+							<div class="mb-3">
+								<label asp-for="ImageURL" class="control-label"></label>
+								<input asp-for="ImageURL" class="form-control"></input>
+								<span asp-validation-for="ImageURL" class="text-danger"></span>
+							</div>
+
+						</div>
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label asp-for="PublisherId" class="control-label"></label>
+								<select asp-for="PublisherId" class="form-control" asp-items="ViewBag.Publishers"></select>
+								<span asp-validation-for="PublisherId" class="text-danger"></span>
+							</div>
+							<div class="mb-3">
+								<label asp-for="BookCategory" class="control-label"></label>
+								<select asp-for="BookCategory" class="form-control" asp-items="Html.GetEnumSelectList<BookCategory>()"></select>
+								<span asp-validation-for="BookCategory" class="text-danger"></span>
+							</div>
+				
+						</div>
+						<div class="col-md-12">
+							<div class="mb-3">
+								<label asp-for="Description" class="control-label"></label>
+								<textarea asp-for="Description" class="form-control"></textarea>
+								<span asp-validation-for="Description" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-4 offset-4 text-center">
+						<img width="100%" id="ImageUrlPreview">
+					</div>
+					<div class="mb-3">
+					<form asp-action="Delete">
+						<input type="hidden" asp-for="Id">
+						<input type="submit" value="Smazat" class="btn btn-danger float-end" />
+					</form>
+						<a class="btn btn-outline-secondary" asp-action="Index">Zobrazit všechny knihy</a>
+					</div>
+			
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+
+	<script>
+		$(document).ready(function ()){
+			var output = document.getElementById("ImageUrlPreview");
+			output.src = $("#ImageURL").val();
+		})
+									}
+		$("#ImageURL").("change", function () {
+			var output = document.getElementById("ImageUrlPreview");
+			output.src = $(this).val();
+		})
+	</script>
+}

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Book>
+@{
+	ViewData["Title"] = "Seznam knih";
+}
+
+<div class="row">
+	@foreach (var item in Model) { 
+	<div class="col-md-4 col-xs-6 border-primary mb-3">
+		<div class="card mb-3" style="max-width:540px;">
+			<div class="row g-0">
+				<div class="col-md-12">
+					<div class="card-header text-white bg-black">
+						<p class="card-text">
+							<h5 class="card-title">
+								@item.Name
+								<a class="text-white float-end" asp-action="Edit" asp-route-id="@item.Id"><i class="bg-black bi-pencil-square"></i></a>
+									<a class="text-white float-end" asp-action="Delete" asp-route-id="@item.Id"><i class="bg-black bi bi-trash"></i></a>
+							</h5>
+						</p>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<img src="@item.ImageURL" width="100%" alt="@item.Name">
+				</div>
+				<div class="col-md-6">
+					<div class="card-body">
+						<p class="card-text">@item.Description</p>
+							<p class="card-text"> <b>Nakladatelství: </b>@item.Publisher.Name</p>
+							<p class="card-text"> <b>Kategorie: </b>@item.BookCategory</p>
+							<p class="card-text"> <b>Datum rozečtení: </b> @item.BuyDate?.ToString("dd MMM yy")</p>
+							<p class="card-text"> <b>Datum dočtení: </b> @item.FinishedDate?.ToString("dd MMM yy")</p>
+							<p class="card-text"> 
+								<b>Status</b> 
+								@if (item.BuyDate != null && item.FinishedDate==null)
+								{
+									<span class="badge bg-success text-white">Rozečteno</span>
+								}
+								else if (item.FinishedDate != null)
+								{
+									<span class="badge bg-primary text-white">Dočteno</span>
+								}
+								else
+								{ 
+								<span class="badge bg-primary text-white">V plánu</span>
+								}
+							</p>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="card-footer">
+						<p class="card-text">
+							@if (item.View == null){
+									<a href="@item.View" class="btn btn-success text-white m-2 float-start" disabled>
+										<i class="bi bi-eyeglasses">
+										</i>   Ukázka
+									</a>
+								}
+								else{
+									<a href="@item.View" class="btn btn-success text-white m-2 float-start">
+										<i class="bi bi-eyeglasses">
+									</i>   Ukázka
+								</a>
+								}
+								<a class="btn btn-outline-primary m-2 float-end" asp-action="Details" asp-route-id="@item.Id">
+									<i class=""></i>Zobrazit detaily</a>
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	}
+</div>
+@await Html.PartialAsync("_CreateItem", "Books")

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Writer>
+@{
+	ViewData["Title"] = "Seznam spisovatelů";
+}
+<h1>Seznam spisovatelů</h1>
+<div class="row">
+	<div class="col-md-8 offset-md-2">
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Jméno</th>
+					<th>Biografie</th>
+					<th>Úpravy</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model) {
+					<tr>
+						<td class="align-middle">
+							<img class="mx-auto d-block" src="@item.ProfilePictureURL" alt="@item.FullName" style="max-height:150px" />
+						</td>
+						<td class="align-middle">
+							@Html.DisplayFor(modelItem=>item.FullName)
+						</td>
+						<td class="align-middle">
+							@Html.DisplayFor(modelItem => item.Bio)
+						</td>
+						<td class="align-middle">
+							<a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i>Upravit</a> |
+							<a class="btn btn-outline-info" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i>Detaily</a> |
+							<a class="btn btn-danger text-white" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i>Smazat</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+
+		</table>
+
+	</div>
+</div>
+@await Html.PartialAsync("_CreateItem", "Writers")

@@ -1,0 +1,85 @@
+﻿@model Book
+@{
+	ViewData["Title"] = "Detail knihy";
+}
+
+<div class="row">
+	<div class="col-md-8 offset-2">
+		<div class="card mb-12">
+			<div class="row g-0">
+				<div class="col-md-12">
+					<div class="card-header text-white bg-info">
+						<p class="card-text">
+							<h5 class="card-title">
+								@Model.Name
+							</h5>
+						</p>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<img src="@Model.ImageURL" width="100%" alt="@Model.Name">
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<p class="card-text">@Model.Description</p>
+						<p class="card-text">
+							<b>Vydavatelstvi: </b>
+							<a asp-controller="Publisher" asp-action="Details" asp-route-id="@Model.PublisherId">
+								@Model.Publisher.Name
+							</a>
+						</p>
+						<p class="card-text"> <b>Categorie: </b>@Model.BookCategory</p>
+						<p class="card-text"> <b>Datum rozečtení: </b> @Model.BuyDate?.ToString("dd MMM yy")</p>
+						<p class="card-text"> <b>Datum dočtení: </b> @Model.FinishedDate?.ToString("dd MMM yy")</p>
+						<p class="card-text">
+							<b>Status</b>
+							@if (Model.BuyDate != null && Model.FinishedDate == null) {
+								<span class="badge bg-success text-white">Rozečteno</span>
+							}
+							else if (Model.FinishedDate != null) {
+								<span class="badge bg-primary text-white">Dočteno</span>
+							}
+							else {
+								<span class="badge bg-primary text-white">V plánu</span>
+							}
+						</p>
+
+						<p class="card-text">
+							<b>Spisovatel: </b>
+							<hr />
+							<div class="row">
+								@foreach (var writer in Model.Writer_Books) {
+									<div class="flex-column text-center">
+										<img class="border-info rounded-circle" src="@writer.Writer.ProfilePictureURL" style="max-width: 150px" />
+										<br />
+										<a asp-controller="Writers" asp-action="Details" asp-route-id="@writer.WriterId">@writer.Writer.FullName</a>
+									</div>
+								}
+							</div>
+						</p>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="card-footer">
+						<p class="card-text d-flex justify-content-between">
+							<a class="btn btn-success text-white">
+								Zobrazit náhled
+							</a>
+							<a class="btn btn-primary" asp-action="Index"><i class="bi-eye"></i>Zpátky na seznam</a>
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+@section Scripts{
+
+<script>
+	$("#ImageURL").("change", function () {
+		var output = document.getElementById("ImageUrlPreview");
+		output.src = $(this).val();
+	})
+</script>
+}
